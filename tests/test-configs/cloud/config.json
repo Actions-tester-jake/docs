@@ -1,0 +1,6 @@
+{
+  "logLevel": "debug",
+  "runTests": {
+    "input": "./test-files"
+  }
+}

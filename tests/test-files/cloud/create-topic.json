@@ -1,0 +1,77 @@
+{
+  "tests": [
+    {
+      "description": "This test creates a topic in Redpanda Serverless.",
+      "setup": "setup-tests/cloud/cloud-log-in.json",
+      "steps": [
+        {
+          "action": "find",
+          "selector": "[data-testid=default-link]",
+          "click": true
+        },
+        {
+          "action": "find",
+          "selector": "[data-testid=cluster-list-item]",
+          "click": true
+        },
+        {
+          "action": "find",
+          "selector": "[data-testid=nav-link-Topics]",
+          "matchText": "Topics",
+          "click": true
+        },
+        {
+          "action": "find",
+          "selector": "button.chakra-button.css-1jkrj4s",
+          "matchText": "Create topic",
+          "click": true
+        },
+        {
+          "action": "find",
+          "selector": ".createTopicModal input:first-of-type",
+          "click": true
+        },
+        {
+          "action": "typeKeys",
+          "keys": ["test"]
+        },
+        {
+          "action": "find",
+          "selector": ".chakra-modal__footer button.css-1egne09",
+          "matchText": "Create",
+          "click": true
+        },
+        {
+          "action": "find",
+          "selector": ".chakra-modal__content .chakra-button",
+          "timeout": 5000,
+          "click": true
+        },
+        {
+          "action": "find",
+          "selector": "tr > td:last-child > div > button",
+          "timeout": 10000
+        },
+        {
+          "action": "saveScreenshot",
+          "path": "../modules/shared/images/cloud-create-topic.png",
+          "overwrite": true
+        },
+        {
+          "action": "find",
+          "selector": "tr > td:last-child > div > button",
+          "click": true
+        },
+        {
+          "action": "wait"
+        },
+        {
+          "action": "find",
+          "selector": ".chakra-modal__footer button:nth-of-type(2)",
+          "matchText": "Delete",
+          "click": true
+        }
+      ]
+    }
+  ]
+}

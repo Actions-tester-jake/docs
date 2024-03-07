@@ -1,0 +1,34 @@
+name: Cloud doc tests
+
+on:
+  workflow_dispatch: # Allows manual trigger of the workflow
+  repository_dispatch: # Allows other repositories to trigger this workflow
+    types: [run-cloud-doc-tests]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Create .env file
+      run: |
+        echo PASSWORD=${{ secrets.PASSWORD }} > tests/.env
+      shell: bash
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Install dependencies
+      run: node postinstall.js
+      working-directory: node_modules/doc-detective-core/scripts
+
+    - name: Run test script
+      run: npm run test-cloud-docs
