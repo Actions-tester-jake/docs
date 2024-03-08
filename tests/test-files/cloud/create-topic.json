@@ -1,6 +1,7 @@
 {
   "tests": [
     {
+      "id": "create-topic",
       "description": "This test creates a topic in Redpanda Serverless.",
       "setup": "setup-tests/cloud/cloud-log-in.json",
       "steps": [

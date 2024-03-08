@@ -24,10 +24,7 @@ jobs:
       shell: bash
 
     - name: Install dependencies
-      run: npm install
-
-    - name: Install dependencies
-      run: node ./node_modules/doc-detective-core/scripts/postinstall.js
+      run: npm install && node ./node_modules/doc-detective-core/scripts/postinstall.js
 
     - name: Run test script
       run: npm run test-cloud-docs
