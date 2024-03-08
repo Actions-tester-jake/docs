@@ -27,8 +27,7 @@ jobs:
       run: npm install
 
     - name: Install dependencies
-      run: node postinstall.js
-      working-directory: node_modules/doc-detective-core/scripts
+      run: node ./node_modules/doc-detective-core/scripts/postinstall.js
 
     - name: Run test script
       run: npm run test-cloud-docs
