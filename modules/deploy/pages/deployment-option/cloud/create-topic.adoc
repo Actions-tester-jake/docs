@@ -1,3 +1,19 @@
+// (test start {"id":"create-topic", "setup": "setup-tests/cloud/cloud-log-in.json"})
+// (step {"action":"find", "selector": "[data-testid=default-link]", "click": true})
+// (step {"action":"find", "selector": "[data-testid=cluster-list-item]", "click": true})
+// (step {"action":"find", "selector": "[data-testid=nav-link-Topics]", "matchText": "Topic", "click": true})
+// (step {"action":"find", "selector": "button.chakra-button.css-1jkrj4s", "matchText": "Create topic", "click": true})
+// (step {"action":"find", "selector": ".createTopicModal input:first-of-type", "click": true})
+// (step {"action":"typeKeys", "keys": ["test"]})
+// (step {"action":"find", "selector": ".chakra-modal__footer button.css-1egne09", "matchText": "Create", "click": true})
+// (step {"action":"find", "selector": ".chakra-modal__content .chakra-button", "timeout": 5000, "click": true})
+// (step {"action":"find", "selector": "tr > td:last-child > div > button", "timeout": 10000})
+// (step {"action":"saveScreenshot", "path": "../modules/shared/images/cloud-create-topic.png", "overwrite": true})
+// (step {"action":"find", "selector": "tr > td:last-child > div > button", "click": true})
+// (step {"action":"wait"})
+// (step {"action":"find", "selector": ".chakra-modal__footer button:nth-of-type(2)", "matchText": "Delete", "click": true})
+// (test end)
+
 = Create a Topic
 :description: Learn how to create a topic for a Redpanda Cloud cluster.
 :page-aliases: cloud:create-topic.adoc
@@ -10,6 +26,7 @@ After you create a cluster, you can create a topic for that cluster.
 . From the navigation menu, select *Topics*. The *Topics* page displays the current list of topics.
 
 . Click *Create Topic*.
+
 . In *Topic Name*, enter a name for your topic.
 . (Optional) Fill in the following fields to overwrite the default settings. Defaults are populated from information stored in the broker.
 +

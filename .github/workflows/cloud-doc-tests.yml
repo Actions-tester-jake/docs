@@ -23,8 +23,25 @@ jobs:
         echo PASSWORD=${{ secrets.CLOUD_PASSWORD }} > tests/.env
       shell: bash
 
-    - name: Install dependencies
-      run: npm install && node ./node_modules/doc-detective-core/scripts/postinstall.js
+    - name: Install dependencies and run tests
+      id: test_script
+      run: |
+        npm install
+        node ./node_modules/doc-detective-core/scripts/postinstall.js
+        OUTPUT=$(npm run test-cloud-docs --silent)
+        echo "test_output=$OUTPUT" >> $GITHUB_ENV
 
-    - name: Run test script
-      run: npm run test-cloud-docs
+    - name: Check for failed tests and create GitHub issue
+      if: contains(env.test_output, 'FAIL')
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          const issueBody = `Failed Tests Output: \n\`\`\`\n${process.env.test_output}\n\`\`\``;
+          const issueTitle = 'Failed Cloud Doc Tests';
+          github.rest.issues.create({
+            owner: 'redpanda-data',
+            repo: 'documentation-private',
+            title: issueTitle,
+            body: issueBody
+          });
