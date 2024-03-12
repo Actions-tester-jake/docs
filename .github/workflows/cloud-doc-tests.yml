@@ -40,8 +40,8 @@ jobs:
           const issueBody = `Failed Tests Output: \n\`\`\`\n${process.env.test_output}\n\`\`\``;
           const issueTitle = 'Failed Cloud Doc Tests';
           github.rest.issues.create({
-            owner: 'redpanda-data',
-            repo: 'documentation-private',
+            owner: 'Actions-tester-jake',
+            repo: 'docs',
             title: issueTitle,
             body: issueBody
           });
