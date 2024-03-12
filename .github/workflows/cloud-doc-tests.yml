@@ -43,7 +43,7 @@ jobs:
           github-token: ${{ secrets.ACTIONS_BOT_TOKEN }}
           script: |
             const fs = require('fs');
-            const issueBody = fs.readFileSync('test_output.json', 'utf8');
+            const issueBody = fs.readFileSync('./tests/test_output.json', 'utf8');
             const issueTitle = 'Failed Cloud Doc Tests';
             github.rest.issues.create({
               owner: 'Actions-tester-jake',

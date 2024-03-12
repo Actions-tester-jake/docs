@@ -10,14 +10,22 @@ try {
   const config = JSON.parse(rawData);
 
   runTests(config)
-    .then((report) => {
-      const failedSteps = report.specs.flatMap(spec =>
-        spec.tests.flatMap(test =>
-          test.contexts.flatMap(context =>
-            context.steps.filter(step => step.result === "FAIL")
-          )
-        )
-      );
+  .then((report) => {
+    const failedSteps = report.specs.flatMap((spec) =>
+      spec.tests.flatMap((test) =>
+        test.contexts.filter(context => context.result === "FAIL").map(context => ({
+          ...context,
+          steps: context.steps.map(step => {
+            if (step.action === 'typeKeys') {
+              // Remove or modify the keys for typeKeys action
+              const { keys, ...rest } = step;
+              return { ...rest, keys: ['***'] };
+            }
+            return step;
+          })
+        }))
+      )
+    );
 
       if (failedSteps.length > 0) {
         const output = JSON.stringify(failedSteps, null, 2);
