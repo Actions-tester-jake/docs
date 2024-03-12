@@ -1,8 +1,8 @@
 name: Cloud doc tests
 
 on:
-  workflow_dispatch: # Allows manual trigger of the workflow
-  repository_dispatch: # Allows other repositories to trigger this workflow
+  workflow_dispatch:
+  repository_dispatch:
     types: [run-cloud-doc-tests]
 
 jobs:
@@ -10,38 +10,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-    - name: Create .env file
-      run: |
-        echo PASSWORD=${{ secrets.CLOUD_PASSWORD }} > tests/.env
-      shell: bash
+      - name: Create .env file
+        run: echo PASSWORD=${{ secrets.CLOUD_PASSWORD }} > tests/.env
+        shell: bash
 
-    - name: Install dependencies and run tests
-      id: test_script
-      run: |
-        npm install
-        node ./node_modules/doc-detective-core/scripts/postinstall.js
-        OUTPUT=$(npm run test-cloud-docs --silent)
-        echo "test_output=$OUTPUT" >> $GITHUB_ENV
+      - name: Install dependencies and run tests
+        run: |
+          npm install
+          node ./node_modules/doc-detective-core/scripts/postinstall.js
+          npm run test-cloud-docs --silent > test_output.txt
 
-    - name: Check for failed tests and create GitHub issue
-      if: contains(env.test_output, 'FAIL')
-      uses: actions/github-script@v7
-      with:
-        github-token: ${{secrets.ACTIONS_BOT_TOKEN}}
-        script: |
-          const issueBody = `Failed Tests Output: \n\`\`\`\n${process.env.test_output}\n\`\`\``;
-          const issueTitle = 'Failed Cloud Doc Tests';
-          github.rest.issues.create({
-            owner: 'Actions-tester-jake',
-            repo: 'docs',
-            title: issueTitle,
-            body: issueBody
-          });
+      - name: Check for failed tests and save to ENV
+        run: |
+          if grep -q FAIL test_output.txt; then
+            echo "failed_tests=$(<test_output.txt)" >> $GITHUB_ENV
+          else
+            echo "failed_tests=true" >> $GITHUB_ENV
+          fi
+
+      - name: Create GitHub Issue for Failed Tests
+        if: env.failed_tests != 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.ACTIONS_BOT_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const issueBody = fs.readFileSync('test_output.txt', 'utf8');
+            const issueTitle = 'Failed Cloud Doc Tests';
+            github.rest.issues.create({
+              owner: 'Actions-tester-jake',
+              repo: 'docs',
+              title: issueTitle,
+              body: `Failed Tests Output:\n\`\`\`\n${issueBody}\n\`\`\``
+            });
