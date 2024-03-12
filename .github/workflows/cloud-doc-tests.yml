@@ -26,11 +26,11 @@ jobs:
         run: |
           npm install
           node ./node_modules/doc-detective-core/scripts/postinstall.js
-          npm run test-cloud-docs --silent > test_output.txt
+          npm run test-cloud-docs --silent
 
       - name: Check for failed tests and save to ENV
         run: |
-          if grep -q FAIL test_output.txt; then
+          if grep -q FAIL test_output.json; then
             echo "failed_tests=true" >> $GITHUB_ENV
           else
             echo "failed_tests=false" >> $GITHUB_ENV
@@ -43,7 +43,7 @@ jobs:
           github-token: ${{ secrets.ACTIONS_BOT_TOKEN }}
           script: |
             const fs = require('fs');
-            const issueBody = fs.readFileSync('test_output.txt', 'utf8');
+            const issueBody = fs.readFileSync('test_output.json', 'utf8');
             const issueTitle = 'Failed Cloud Doc Tests';
             github.rest.issues.create({
               owner: 'Actions-tester-jake',
