@@ -26,11 +26,11 @@ jobs:
         run: |
           npm install
           node ./node_modules/doc-detective-core/scripts/postinstall.js
-          npm run test-cloud-docs --silent
+          npm run test-cloud-docs
 
       - name: Check for failed tests and save to ENV
         run: |
-          if grep -q FAIL test_output.json; then
+          if grep -q FAIL ./tests/test_output.json; then
             echo "failed_tests=true" >> $GITHUB_ENV
           else
             echo "failed_tests=false" >> $GITHUB_ENV
