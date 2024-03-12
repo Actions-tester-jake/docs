@@ -13,15 +13,15 @@
     "@antora/cli": "3.1.2",
     "@antora/site-generator": "3.1.2",
     "@asciidoctor/tabs": "^1.0.0-beta.5",
-    "@redpanda-data/docs-extensions-and-macros": "latest",
-    "doc-detective-core": "^2.9.2"
+    "@redpanda-data/docs-extensions-and-macros": "latest"
   },
   "devDependencies": {
     "@web/dev-server": "^0.2.1",
     "cross-env": "^7.0.3",
     "gulp": "^4.0.2",
     "gulp-connect": "^5.7.0",
-    "open": "^9.1.0"
+    "open": "^9.1.0",
+    "doc-detective-core": "^2.9.5"
   },
   "overrides": {
     "vinyl-fs": {
