@@ -19,7 +19,7 @@ jobs:
           node-version: '18'
 
       - name: Create .env file
-        run: echo PASSWORD=${{ secrets.CLOUD_PASSWORD }} > tests/.env
+        run: echo PASSWORD=${{ secrets.CLOUD_PASSWORD }} > tests/setup-tests/cloud/.env
         shell: bash
 
       - name: Install dependencies and run tests

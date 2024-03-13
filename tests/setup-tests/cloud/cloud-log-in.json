@@ -4,7 +4,7 @@
       "steps": [
         {
           "action": "setVariables",
-          "path": ".env"
+          "path": "setup-tests/cloud/.env"
         },
         {
           "action": "goTo",
