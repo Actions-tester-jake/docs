@@ -4,8 +4,24 @@ const { runTests } = require("doc-detective-core");
 
 const configPath = 'test-configs/cloud/config.json';
 const outputPath = path.join(process.cwd(), 'test_output.json');
+const envFilePath = path.join(process.cwd(), 'setup-tests/cloud/.env');
+
+function checkEnvFile(filePath) {
+  if (!fs.existsSync(filePath)) {
+    console.error('.env file is required and must be located at setup-tests/cloud/.env');
+    console.error('The .env file must contain PASSWORD={your-cloud-password}');
+    process.exit(1);
+  }
+
+  const envContents = fs.readFileSync(filePath, 'utf8');
+  if (!envContents.includes('PASSWORD=')) {
+    console.error('.env file must contain PASSWORD={your-cloud-password}');
+    process.exit(1);
+  }
+}
 
 try {
+  checkEnvFile(envFilePath);
   const rawData = fs.readFileSync(configPath);
   const config = JSON.parse(rawData);
 

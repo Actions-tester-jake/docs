@@ -1,0 +1,18 @@
+{
+  "tests": [
+    {
+      "id": "start-redpanda",
+      "description": "Deploy Redpanda with Docker Compose",
+      "steps": [
+        {
+          "action": "setVariables",
+          "path": "setup-tests/docker/.env"
+        },
+        {
+          "action": "runShell",
+          "command": "setup-tests/docker/start-redpanda.sh"
+        }
+      ]
+    }
+  ]
+}

@@ -10,3 +10,4 @@ docs/
 .docusaurus
 docker-compose.yml
 tests/test_output.json
+*/**/.env

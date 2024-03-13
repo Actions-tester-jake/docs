@@ -1,0 +1,15 @@
+{
+  "tests": [
+    {
+      "id": "get-cluster-info",
+      "description": "Deploy Redpanda with Docker Compose",
+      "setup": "setup-tests/docker/start-redpanda.json",
+      "steps": [
+        {
+          "action": "runShell",
+          "command": "docker exec redpanda-0 rpk cluster info"
+        }
+      ]
+    }
+  ]
+}
