@@ -27,6 +27,7 @@ try {
 
   runTests(config)
     .then((report) => {
+      console.log(report)
       const failedSteps = report.specs.flatMap((spec) =>
         spec.tests.flatMap((test) =>
           test.contexts

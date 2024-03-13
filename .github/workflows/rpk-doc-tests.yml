@@ -45,8 +45,7 @@ jobs:
 
             // Construct the issue body with failed test details
             let issueBody = failedTests.map(failedTest => {
-              const relativePath = failedTest.file.split('/modules')[1] || failedTest.file;
-              return `Failed test in ${relativePath}:\n\`\`\`json\n${JSON.stringify(failedTest, null, 2)}\n\`\`\``;
+              return `Failed rpk test:\n\`\`\`json\n${JSON.stringify(failedTest, null, 2)}\n\`\`\``;
             }).join('\n\n');
 
             // Create a new GitHub issue with the constructed body
