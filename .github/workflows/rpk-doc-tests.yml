@@ -1,0 +1,58 @@
+name: rpk doc tests
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [run-rpk-doc-tests]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies and run tests
+        run: |
+          npm install
+          node ./node_modules/doc-detective-core/scripts/postinstall.js
+          npm run test-rpk-docs
+
+      - name: Check for failed tests and save to ENV
+        run: |
+          if grep -q FAIL ./tests/test_output.json; then
+            echo "failed_tests=true" >> $GITHUB_ENV
+          else
+            echo "failed_tests=false" >> $GITHUB_ENV
+          fi
+
+      - name: Create GitHub issue for failed tests
+        if: env.failed_tests == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.ACTIONS_BOT_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const path = './tests/test_output.json';
+            const failedTests = JSON.parse(fs.readFileSync(path, 'utf8'));
+            const issueTitle = 'Failed doc tests for rpk';
+
+            // Construct the issue body with failed test details
+            let issueBody = failedTests.map(failedTest => {
+              const relativePath = failedTest.file.split('/modules')[1] || failedTest.file;
+              return `Failed test in ${relativePath}:\n\`\`\`json\n${JSON.stringify(failedTest, null, 2)}\n\`\`\``;
+            }).join('\n\n');
+
+            // Create a new GitHub issue with the constructed body
+            github.rest.issues.create({
+              owner: 'Actions-tester-jake',
+              repo: 'docs',
+              title: issueTitle,
+              body: issueBody
+            });
