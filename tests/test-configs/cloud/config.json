@@ -1,7 +1,7 @@
 {
-  "logLevel": "warning",
+  "logLevel": "error",
   "runTests": {
-    "input": "../modules/deploy/pages/deployment-option/cloud/create-topic.adoc"
+    "input": "../modules/deploy/pages/deployment-option/cloud/"
   },
   "fileTypes": [
     {

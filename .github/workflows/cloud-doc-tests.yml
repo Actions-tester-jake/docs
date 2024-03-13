@@ -36,18 +36,26 @@ jobs:
             echo "failed_tests=false" >> $GITHUB_ENV
           fi
 
-      - name: Create GitHub Issue for Failed Tests
+      - name: Create GitHub issue for failed tests
         if: env.failed_tests == 'true'
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.ACTIONS_BOT_TOKEN }}
           script: |
             const fs = require('fs');
-            const issueBody = fs.readFileSync('./tests/test_output.json', 'utf8');
-            const issueTitle = 'Failed Cloud Doc Tests';
+            const path = './tests/test_output.json';
+            const failedTests = JSON.parse(fs.readFileSync(path, 'utf8'));
+            const issueTitle = 'Failed doc tests for Redpanda Cloud';
+
+            // Construct the issue body with failed test details
+            let issueBody = failedTests.map(failedTest => {
+              return `Failed test in ${failedTest.file}:\n\`\`\`json\n${JSON.stringify(failedTest, null, 2)}\n\`\`\``;
+            }).join('\n\n');
+
+            // Create a new GitHub issue with the constructed body
             github.rest.issues.create({
               owner: 'Actions-tester-jake',
               repo: 'docs',
               title: issueTitle,
-              body: `Failed Tests Output:\n\`\`\`\n${issueBody}\n\`\`\``
+              body: issueBody
             });
