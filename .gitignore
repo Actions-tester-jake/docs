@@ -8,6 +8,5 @@ build/_redirects
 poc-docs/
 docs/
 .docusaurus
-docker-compose.yml
 tests/test_output.json
 tests/setup-tests/cloud/.env
