@@ -7,7 +7,7 @@
       "steps": [
         {
           "action": "runShell",
-          "command": "docker exec redpanda-0 rpk cluster info"
+          "command": "docker exec redpanda-0 rpk cluster get"
         }
       ]
     }

@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Path to your Docker Compose file
-#COMPOSE_URL="https://raw.githubusercontent.com/redpanda-data/redpanda-labs/main/docker-compose/three-brokers/docker-compose.yml"
+COMPOSE_URL="https://raw.githubusercontent.com/redpanda-data/redpanda-labs/main/docker-compose/three-brokers/docker-compose.yml"
 
 # Local path to save the downloaded Docker Compose file
 COMPOSE_FILE="./docker-compose.yml"
 
 # Download Docker Compose file
-#echo "Downloading Docker Compose file..."
-#curl -o "$COMPOSE_FILE" "$COMPOSE_URL" || wget -O "$COMPOSE_FILE" "$COMPOSE_URL"
+echo "Downloading Docker Compose file..."
+curl -o "$COMPOSE_FILE" "$COMPOSE_URL" || wget -O "$COMPOSE_FILE" "$COMPOSE_URL"
 
 # Check if download was successful
 if [ ! -f "$COMPOSE_FILE" ]; then
