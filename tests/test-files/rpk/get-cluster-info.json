@@ -7,7 +7,10 @@
       "steps": [
         {
           "action": "runShell",
-          "command": "docker exec redpanda-0 rpk cluster info"
+          "command": "sh test-files/rpk/execute-rpk-command.sh",
+          "args": [
+            "rpk cluster info"
+          ]
         }
       ]
     }
